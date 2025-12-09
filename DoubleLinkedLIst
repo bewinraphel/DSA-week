@@ -95,6 +95,26 @@ class DoublyLinkedList {
     }
   }
 
+//Check if the List is Circular
+
+bool isCircular() {
+  if (head == null) return false;
+
+  Node? temp = head!.next;
+  while (temp != null && temp != head) {
+    temp = temp.next;
+  }
+  return temp == head;
+}
+
+////Convert Doubly Linked List to Circular Doubly Linked List
+
+ void makeCircular() {
+  if (head == null || tail == null) return;
+
+  tail!.next = head;
+  head!.prev = tail;
+}
   // Display Forward
   void displayForward() {
     Node? temp = head;
