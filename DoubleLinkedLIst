@@ -1,0 +1,138 @@
+class Node {
+  int data;
+  Node? prev;
+  Node? next;
+
+  Node(this.data);
+}
+
+class DoublyLinkedList {
+  Node? head;
+  Node? tail;
+
+  // Insert at beginning
+  void insertAtBeginning(int data) {
+    Node newNode = Node(data);
+    if (head == null) {
+      head = tail = newNode;
+      return;
+    }
+    newNode.next = head;
+    head!.prev = newNode;
+    head = newNode;
+  }
+
+  // Insert at end
+  void insertAtEnd(int data) {
+    Node newNode = Node(data);
+    if (tail == null) {
+      head = tail = newNode;
+      return;
+    }
+    tail!.next = newNode;
+    newNode.prev = tail;
+    tail = newNode;
+  }
+
+  // Insert after a given data
+  void insertAfter(int key, int data) {
+    Node? temp = head;
+    while (temp != null) {
+      if (temp.data == key) {
+        Node newNode = Node(data);
+
+        newNode.next = temp.next;
+        newNode.prev = temp;
+        temp.next = newNode;
+
+        if (newNode.next != null) {
+          newNode.next!.prev = newNode;
+        } else {
+          tail = newNode;
+        }
+        return;
+      }
+      temp = temp.next;
+    }
+  }
+
+  // Delete a node with specific data
+  void delete(int data) {
+    if (head == null) return;
+
+    // Only one node
+    if (head == tail && head!.data == data) {
+      head = null;
+      tail = null;
+      return;
+    }
+
+    // Delete head
+    if (head!.data == data) {
+      head = head!.next;
+      head!.prev = null;
+      return;
+    }
+
+    Node? temp = head;
+
+    while (temp != null) {
+      // Delete tail
+      if (temp.data == data && temp == tail) {
+        tail = tail!.prev;
+        tail!.next = null;
+        return;
+      }
+
+      // Delete middle
+      if (temp.data == data) {
+        temp.prev!.next = temp.next;
+        temp.next!.prev = temp.prev;
+        return;
+      }
+
+      temp = temp.next;
+    }
+  }
+
+  // Display Forward
+  void displayForward() {
+    Node? temp = head;
+    while (temp != null) {
+      stdout.write("${temp.data} <-> ");
+      temp = temp.next;
+    }
+    print("null");
+  }
+
+  // Display Backward
+  void displayBackward() {
+    Node? temp = tail;
+    while (temp != null) {
+      stdout.write("${temp.data} <-> ");
+      temp = temp.prev;
+    }
+    print("null");
+  }
+
+  // Count nodes
+  int count() {
+    int c = 0;
+    Node? temp = head;
+    while (temp != null) {
+      c++;
+      temp = temp.next;
+    }
+    return c;
+  }
+
+  // Search
+  bool search(int data) {
+    Node? temp = head;
+    while (temp != null) {
+      if (temp.data == data) return true;
+      temp = temp.next;
+    }
+    return false;
+  }
+}
